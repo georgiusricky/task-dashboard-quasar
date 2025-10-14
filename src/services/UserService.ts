@@ -23,6 +23,11 @@ export class UserService {
     return this._list;
   }
 
+  public setList(list: Array<UserModel>) {
+    this._list = list;
+    this.saveToLocalStorage();
+  }
+
   private initialize(): void {
     this.loadFromLocalStorage();
     if (this._list.length === 0) {
@@ -56,5 +61,39 @@ export class UserService {
 
   public getAllUsers(): UserModel[] {
     return this._list;
+  }
+
+  public create(user: UserModel): UserModel {
+    const newUser = new UserModel({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role ?? 'member',
+    });
+    this._list.push(newUser);
+    this.saveToLocalStorage();
+    return newUser;
+  }
+
+  public update(user: UserModel): UserModel {
+    const index = this._list.findIndex((u) => u.id === user.id);
+    if (index !== -1) {
+      this._list[index] = new UserModel({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role ?? 'member',
+      });
+      this.saveToLocalStorage();
+    }
+    return user;
+  }
+
+  public delete(userId: string): UserModel | undefined {
+    const index = this._list.findIndex((u) => u.id === userId);
+    if (index === -1) return undefined;
+    const [removed] = this._list.splice(index, 1);
+    this.saveToLocalStorage();
+    return removed;
   }
 }

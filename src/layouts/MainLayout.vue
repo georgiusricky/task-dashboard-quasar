@@ -34,6 +34,16 @@
                 <q-item-label caption>Full task management</q-item-label>
               </q-item-section>
             </q-item>
+
+            <q-item clickable v-ripple to="/users" class="q-mb-xs rounded-borders q-mx-sm">
+              <q-item-section avatar>
+                <q-icon name="group" color="teal" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>User Management</q-item-label>
+                <q-item-label caption>Manage team members</q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-tab-panel>
       </q-tab-panels>

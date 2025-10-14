@@ -15,6 +15,11 @@ const routes: RouteRecordRaw[] = [
         name: 'tasks',
         component: () => import('../pages/TaskListPage.vue'),
       },
+      {
+        path: '/users',
+        name: 'users',
+        component: () => import('../pages/UserManagementPage.vue'),
+      },
     ],
   },
 
