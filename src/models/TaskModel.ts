@@ -10,6 +10,8 @@ export interface TaskModelParams {
   assignedTo?: string | null;
   createdAt?: string;
   updatedAt?: string;
+  isDeleted?: boolean;
+  deletedAt?: string | null;
 }
 
 export class TaskModel {
@@ -22,6 +24,8 @@ export class TaskModel {
   assignedTo: string | null;
   createdAt: string;
   updatedAt: string;
+  isDeleted: boolean;
+  deletedAt: string | null;
 
   constructor(params: TaskModelParams) {
     this.id = params.id ?? TaskModel.generateId();
@@ -33,6 +37,8 @@ export class TaskModel {
     this.assignedTo = params.assignedTo ?? null;
     this.createdAt = params.createdAt ?? new Date().toISOString();
     this.updatedAt = params.updatedAt ?? new Date().toISOString();
+    this.isDeleted = params.isDeleted ?? false;
+    this.deletedAt = params.deletedAt ?? null;
   }
 
   static fromJson(json?: Record<string, unknown>): TaskModel {
@@ -47,20 +53,18 @@ export class TaskModel {
       assignedTo: typeof json.assignedTo === 'string' ? json.assignedTo : null,
       createdAt: typeof json.createdAt === 'string' ? json.createdAt : new Date().toISOString(),
       updatedAt: typeof json.updatedAt === 'string' ? json.updatedAt : new Date().toISOString(),
+      isDeleted: typeof json.isDeleted === 'boolean' ? json.isDeleted : false,
+      deletedAt: typeof json.deletedAt === 'string' ? json.deletedAt : null,
     });
   }
 
-  copy(): TaskModel {
-    return TaskModel.fromJson(JSON.parse(JSON.stringify(this)));
-  }
-
-  get isOverdue(): boolean {
+  public get isOverdue(): boolean {
     if (!this.dueDate || this.isCompleted) return false;
     return new Date(this.dueDate) < new Date();
   }
 
-  get priorityColor(): string {
-    switch (this.priority) {
+  public get priorityColor(): string {
+    switch (this.priority.toLowerCase()) {
       case 'high':
         return 'red';
       case 'medium':
@@ -68,6 +72,15 @@ export class TaskModel {
       default:
         return 'green';
     }
+  }
+
+  public get statusIcon(): string {
+    return this.isCompleted ? 'check_circle' : 'radio_button_unchecked';
+  }
+
+  public copy(): TaskModel {
+    const copy = Object.assign(TaskModel.fromJson(), this);
+    return copy;
   }
 
   static generateId(): string {

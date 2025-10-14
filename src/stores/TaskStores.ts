@@ -6,38 +6,56 @@ import { TaskModel, type TaskModelParams } from '../models/TaskModel';
 const service = TaskService.getInstance();
 
 export const useTaskStore = defineStore('tasks', () => {
-  const tasks = ref<TaskModel[]>(service.list);
+  const tasks = ref<TaskModel[]>([...service.list]);
 
   function reload() {
-    tasks.value = service.list;
+    tasks.value = [...service.list];
   }
 
   async function create(data: Partial<TaskModel>) {
     await service.create(new TaskModel(data as TaskModelParams));
-
     reload();
   }
 
   async function update(task: TaskModel) {
-    await service.update(task);
-    reload();
+    const updatedTask = await service.update(task);
+    const index = tasks.value.findIndex((t) => t.id === task.id);
+    if (index !== -1) {
+      tasks.value[index] = updatedTask;
+    }
   }
 
   async function remove(id: string) {
-    await service.delete(id);
-    reload();
+    const updated = await service.delete(id);
+    if (updated) {
+      const index = tasks.value.findIndex((t) => t.id === id);
+      if (index !== -1) {
+        tasks.value[index] = updated;
+      } else {
+        reload();
+      }
+    }
   }
 
   async function toggle(id: string) {
-    await service.toggle(id);
-    reload();
+    const updatedTask = await service.toggle(id);
+    if (updatedTask) {
+      const index = tasks.value.findIndex((t) => t.id === id);
+      if (index !== -1) {
+        tasks.value[index] = updatedTask;
+      }
+    }
   }
 
-  const stats = computed(() => ({
-    total: tasks.value.length,
-    completed: tasks.value.filter((t) => t.isCompleted).length,
-    overdue: tasks.value.filter((t) => t.isOverdue).length,
-  }));
+  const stats = computed(() => {
+    const active = tasks.value.filter((t) => !t.isDeleted);
+    return {
+      total: active.length,
+      completed: active.filter((t) => t.isCompleted).length,
+      pending: active.filter((t) => !t.isCompleted && !t.isOverdue).length,
+      overdue: active.filter((t) => t.isOverdue && !t.isCompleted).length,
+    };
+  });
 
   return { tasks, reload, create, update, remove, toggle, stats };
 });
