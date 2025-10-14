@@ -2,6 +2,12 @@
 
 A comprehensive task management dashboard application built with **Vue 3**, **TypeScript**, and **Quasar Framework**. This offline-first application provides a complete task management solution with team collaboration features.
 
+## 🧩 Demo Site
+
+You can check out the live demo here:
+
+👉 [https://task-management-ricky.netlify.app](https://task-management-ricky.netlify.app)
+
 ## 📊 Time Log
 
 ### Development Time Allocation
