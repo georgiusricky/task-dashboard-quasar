@@ -22,7 +22,7 @@
           <q-btn
             flat
             dense
-            size="sm"
+            size="md"
             :icon="buttonIcon"
             :label="buttonLabel"
             :color="buttonColor"
