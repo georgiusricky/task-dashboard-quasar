@@ -7,12 +7,12 @@ It allows users to create, edit, delete, and track tasks efficiently with offlin
 
 ## 🕜 Time Tracking
 
-| Task                       | Time Log (GMT+7)          | Duration |
-| -------------------------- | ------------------------- | -------- |
-| Initial setup and planning | 14 Oct 2025 · 00:15–00:45 | 30 m     |
-|                            |                           |          |
-|                            |                           |          |
-|                            |                           |          |
+| Task                           | Time Log (GMT+7)          | Duration |
+| ------------------------------ | ------------------------- | -------- |
+| Initial setup and planning     | 14 Oct 2025 · 00:15–00:45 | 30 m     |
+| Core functionality development | 15 Oct 2025 . 16:30-17:30 | 1 h      |
+|                                |                           |          |
+|                                |                           |          |
 
 ---
 
